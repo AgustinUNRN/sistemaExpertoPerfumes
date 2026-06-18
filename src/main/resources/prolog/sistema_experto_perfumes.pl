@@ -4,10 +4,6 @@
 % Base de conocimiento cargada externamente (CSV -> Spring)
 % =====================================================
 
-:- dynamic perfume/5.
-:- dynamic nota_olfativa/3.
-:- dynamic clasifica_nota/2.
-
 :- ensure_loaded('base_conocimiento.pl').
 
 % -----------------------------------------------------
@@ -80,14 +76,6 @@ familia_estacion(limpio,invierno).
 familia_estacion(limpio,primavera).
 familia_estacion(oriental,otoño).
 familia_estacion(oriental,invierno).
-
-
-familia_etiqueta(citrico, fresco).
-familia_etiqueta(floral, suave).
-familia_etiqueta(amaderado, calido).
-familia_etiqueta(gourmand, dulce).
-familia_etiqueta(especiado, especiado).
-familia_etiqueta(acuatico, limpio).
 
 intensidad_ocasion(leve, oficina).
 intensidad_ocasion(leve, diario).
@@ -186,7 +174,7 @@ maximo_familia([F-V|Resto], MejorF, MejorV) :-
     ).
 
 % -----------------------------------------------------
-% FAMILIA PREDOMINANTE (RF7)
+% FAMILIA PREDOMINANTE
 % -----------------------------------------------------
 
 familia_predominante(Perfume, FamiliaPred) :-
@@ -200,7 +188,7 @@ familia_predominante(Perfume, FamiliaPred) :-
     ).
 
 % -----------------------------------------------------
-% ESTACION Y OCASION (RF8)
+% ESTACION Y OCASION
 % -----------------------------------------------------
 
 estacion_sugerida(Perfume, Estacion) :-
@@ -212,7 +200,7 @@ ocasion_sugerida(Perfume, Ocasion) :-
     intensidad_ocasion(Intensidad, Ocasion).
 
 % -----------------------------------------------------
-% DETALLE PERFUME (RF4)
+% DETALLE PERFUME
 % -----------------------------------------------------
 
 detalle_perfume(Perfume,
@@ -239,14 +227,14 @@ detalle_perfume(Perfume,
     findall(O,
             intensidad_ocasion(Intensidad, O),
             Ocasiones),
-    Ocasiones = [Ocasion|_],
+    Ocasiones = [Ocasion|_].
 
-    findall(T,
-            familia_etiqueta(Familia, T),
-            Etiquetas).
+    %findall(T,
+    %        familia_etiqueta(Familia, T),
+     %       Etiquetas).
 
 % -----------------------------------------------------
-% FILTROS (RF5)
+% FILTROS
 % -----------------------------------------------------
 
 filtrar_perfumes(Min, Max, Intensidad, Genero, Resultado) :-
@@ -259,7 +247,7 @@ filtrar_perfumes(Min, Max, Intensidad, Genero, Resultado) :-
         Resultado).
 
 % -----------------------------------------------------
-% EVITAR TIPOS (RF9)
+% EVITAR TIPOS
 % -----------------------------------------------------
 
 contiene_tipo(Perfume, Tipo) :-
@@ -273,7 +261,7 @@ cumple_evitar(Perfume, EvitarTipos) :-
     ).
 
 % -----------------------------------------------------
-% SIMILITUD JACCARD (RF6)
+% SIMILITUD JACCARD
 % -----------------------------------------------------
 
 similaridad_jaccard(P1, P2, Sim) :-
@@ -311,7 +299,7 @@ comparar_similitud(Delta,
     compare(Delta, S2, S1).
 
 % -----------------------------------------------------
-% SCORE RECOMENDACION (RF3)
+% SCORE RECOMENDACION
 % -----------------------------------------------------
 
 afinidad_notas(Perfume, FamiliasFav, Score) :-
@@ -365,7 +353,7 @@ score_recomendacion(
         WP*P.
 
 % -----------------------------------------------------
-% EXPLICACION (RF10)
+% EXPLICACION
 % -----------------------------------------------------
 
 explicacion_recomendacion(
@@ -389,7 +377,7 @@ explicacion_recomendacion(
     penalizacion_precio(Perfume, Min, Max, P).
 
 % -----------------------------------------------------
-% TOP-K RECOMENDACIONES (RF3)
+% TOP-K RECOMENDACIONES
 % -----------------------------------------------------
 
 recomendar(

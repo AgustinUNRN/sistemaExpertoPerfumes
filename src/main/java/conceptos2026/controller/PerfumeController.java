@@ -29,6 +29,9 @@ public class PerfumeController {
                 .replace("-", "_");
     }
 
+    @Operation(
+            summary = "Recargar base de conocimiento"
+    )
     @PostMapping("/recargar")
     public String recargar() {
 
@@ -56,6 +59,9 @@ public class PerfumeController {
         );
     }
 
+    @Operation(
+            summary = "Obtener detalle de un perfume"
+    )
     @GetMapping("/{nombre}/detalle")
     public String detallePerfume(
             @PathVariable String nombre
@@ -72,6 +78,9 @@ public class PerfumeController {
         );
     }
 
+    @Operation(
+            summary = "Obtener perfumes similares"
+    )
     @GetMapping("/{nombre}/similares")
     public String perfumesSimilares(
             @PathVariable String nombre,
@@ -133,33 +142,28 @@ public class PerfumeController {
         return prologService.recomendar(consulta);
     }
 
-
-    @GetMapping("/test")
-    public String test() {
-        return "FUNCIONA";
-    }
-
-    @GetMapping("/debug/{nombre}")
-    public String debug(@PathVariable String nombre) {
+    @Operation(
+            summary = "Obtener notas de un perfume"
+    )
+    @GetMapping("/{nombre}/notas")
+    public String notasPerfume(
+            @PathVariable String nombre
+    ) {
 
         String consulta =
                 String.format(
-                        "perfume(%s,L,G,P,I),writeln([L,G,P,I])",
-                        nombre
+                        "todas_notas(%s,R),writeln(R)",
+                        atom(nombre)
                 );
 
-        return prologService.ejecutarConsulta(consulta);
+        return prologService.ejecutarConsulta(
+                consulta
+        );
     }
 
-    @GetMapping("/debug-familia/{nombre}")
-    public String debugFamilia(
-            @PathVariable String nombre
-    ) {
-        return prologService.ejecutarConsulta(
-                String.format(
-                        "familia_predominante(%s,F),writeln(F)",
-                        nombre
-                )
-        );
+
+    @GetMapping("/test-conexion")
+    public String test() {
+        return "FUNCIONA";
     }
 }

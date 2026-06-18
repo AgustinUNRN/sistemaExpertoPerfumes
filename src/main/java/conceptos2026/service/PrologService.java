@@ -89,11 +89,6 @@ public class PrologService {
 
         String resultado =
                 ejecutarConsulta(consulta);
-
-        System.out.println("===== SALIDA PROLOG =====");
-        System.out.println(resultado);
-        System.out.println("=========================");
-
         return parsearRecomendaciones(resultado);
     }
 
